@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Chat_AppDbEntities">
+    <EntitySetMapping Name="Messages">
+      <EntityTypeMapping TypeName="Model.Message">
+        <MappingFragment StoreEntitySet="Message">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="FromUser" ColumnName="FromUser" />
+          <ScalarProperty Name="touser" ColumnName="touser" />
+          <ScalarProperty Name="message1" ColumnName="message" />
+          <ScalarProperty Name="date" ColumnName="date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserConnections">
+      <EntityTypeMapping TypeName="Model.UserConnection">
+        <MappingFragment StoreEntitySet="UserConnection">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Userid" ColumnName="Userid" />
+          <ScalarProperty Name="Connectionid" ColumnName="Connectionid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTables">
+      <EntityTypeMapping TypeName="Model.UserTable">
+        <MappingFragment StoreEntitySet="UserTable">
+          <ScalarProperty Name="Userid" ColumnName="Userid" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

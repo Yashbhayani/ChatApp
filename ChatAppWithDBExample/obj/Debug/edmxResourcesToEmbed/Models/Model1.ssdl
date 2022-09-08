@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FromUser" Type="int" Nullable="false" />
+    <Property Name="touser" Type="int" Nullable="false" />
+    <Property Name="message" Type="varchar(max)" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserConnection">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Userid" Type="int" Nullable="false" />
+    <Property Name="Connectionid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="Userid" />
+    </Key>
+    <Property Name="Userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Fullname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Message_User">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="Message" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="FromUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Message_User1">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="Message" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="touser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserConnection_User">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="UserConnection" Type="Self.UserConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="UserConnection">
+        <PropertyRef Name="Userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserConnection" EntityType="Self.UserConnection" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Message_User" Association="Self.FK_Message_User">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="Message" EntitySet="Message" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Message_User1" Association="Self.FK_Message_User1">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="Message" EntitySet="Message" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserConnection_User" Association="Self.FK_UserConnection_User">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="UserConnection" EntitySet="UserConnection" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

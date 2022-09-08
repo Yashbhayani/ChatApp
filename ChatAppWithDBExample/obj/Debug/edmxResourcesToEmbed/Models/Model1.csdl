@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FromUser" Type="Int32" Nullable="false" />
+    <Property Name="touser" Type="Int32" Nullable="false" />
+    <Property Name="message1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK_Message_User" FromRole="Message" ToRole="UserTable" />
+    <NavigationProperty Name="UserTable1" Relationship="Self.FK_Message_User1" FromRole="Message" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="UserConnection">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Userid" Type="Int32" Nullable="false" />
+    <Property Name="Connectionid" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK_UserConnection_User" FromRole="UserConnection" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="Userid" />
+    </Key>
+    <Property Name="Userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Fullname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Messages" Relationship="Self.FK_Message_User" FromRole="UserTable" ToRole="Message" />
+    <NavigationProperty Name="Messages1" Relationship="Self.FK_Message_User1" FromRole="UserTable" ToRole="Message" />
+    <NavigationProperty Name="UserConnections" Relationship="Self.FK_UserConnection_User" FromRole="UserTable" ToRole="UserConnection" />
+  </EntityType>
+  <Association Name="FK_Message_User">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="Message" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="FromUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Message_User1">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="Message" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="touser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserConnection_User">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="UserConnection" Type="Self.UserConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="Userid" />
+      </Principal>
+      <Dependent Role="UserConnection">
+        <PropertyRef Name="Userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Chat_AppDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Messages" EntityType="Self.Message" />
+    <EntitySet Name="UserConnections" EntityType="Self.UserConnection" />
+    <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+    <AssociationSet Name="FK_Message_User" Association="Self.FK_Message_User">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="Message" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Message_User1" Association="Self.FK_Message_User1">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="Message" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserConnection_User" Association="Self.FK_UserConnection_User">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="UserConnection" EntitySet="UserConnections" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
